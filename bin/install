@@ -1,0 +1,13 @@
+#!/bin/bash -eux
+
+case "$1" in
+  -v|--version)
+    version="$2"
+esac
+
+# The install script creates and configures files that OpenShift Enterprise copies from the cartridge repository to the gear's directory. 
+# OpenShift Enterprise runs the install script only on the first installation of a cartridge.
+# Put logic for one-time operations, for example generating passwords, creating ssh keys, and adding environment variables, in the install script.
+
+# create and populate directory with project's version controlled artifacts
+

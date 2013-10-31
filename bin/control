@@ -1,0 +1,128 @@
+#!/bin/bash -e
+
+cartridge_type="bizCentral"
+version=6.0
+
+# check prior installation of BPMS Base cartridge
+function isBpmsBaseInstalled() {
+    if [  "x${OPENSHIFT_BPMS_VERSION}" = "x" ]; then
+        echo "Please install BPMS Base cartridge prior to installing this BPMS HA Cartridge"
+        return 1
+    fi
+    echo "Nice:  BPMS Base cartridge is installed in this application"
+    return 0
+}
+
+# Check if the server http port is up
+function isdbup() {
+    if [  "x${OPENSHIFT_MYSQL_DB_HOST}" = "x" ]; then
+        echo "Unable to locate the following env variable:  OPENSHIFT_MYSQL_DB_HOST.  Please install MYSQL cartridge prior to installing this BPMS HA Cartridge"
+        return 1
+    fi
+
+    let count=0
+    while [ ${count} -lt 24 ]
+    do
+        if /usr/sbin/lsof -P -n -i "@${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}" | grep "(LISTEN)" > /dev/null; then
+            echo "Found ${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT} listening port"
+            return 0
+        fi
+        let count=${count}+1
+
+        sleep 2
+    done
+
+    return 1
+}
+
+function build() {
+  echo "Building BPMS HA Server"
+
+}
+
+function deploy() {
+  echo "Deploying BPMS HA Server"
+  
+}
+
+function copy_conf() {
+    # copy any project CLI files to filtered directory
+    mkdir -p ${OPENSHIFT_BIZCENTRAL_DIR}/filtered
+    cp ${OPENSHIFT_BIZCENTRAL_DIR}/versions/${version}/conf/* ${OPENSHIFT_BIZCENTRAL_DIR}/filtered
+}
+
+function replace_envs() {
+    # filter of substitution variables for various config files
+    # note the use of different delimiters for sed since some data (ie:  path variables) include special characters that conflict with delimiter
+    for f in ${OPENSHIFT_BIZCENTRAL_DIR}/filtered/*.*
+    do
+        sed -i -e "s/\${env.OPENSHIFT_JBOSSEAP_IP}/$OPENSHIFT_JBOSSEAP_IP/g" $f
+        sed -i -e "s/\${env.OPENSHIFT_MYSQL_DB_HOST}/$OPENSHIFT_MYSQL_DB_HOST/g" $f
+        sed -i -e "s/\${env.OPENSHIFT_MYSQL_DB_PORT}/$OPENSHIFT_MYSQL_DB_PORT/g" $f
+        sed -i -e "s/\${env.OPENSHIFT_MYSQL_DB_USERNAME}/$OPENSHIFT_MYSQL_DB_USERNAME/g" $f
+        sed -i -e "s/\${env.OPENSHIFT_MYSQL_DB_PASSWORD}/$OPENSHIFT_MYSQL_DB_PASSWORD/g" $f
+        sed -i -e "s/\${org.jboss.processFlow.bam.queue}/processFlow.asyncWorkingMemoryLogger/g" $f
+        sed -i -e "s@\${env.deployDir}@$OPENSHIFT_BIZCENTRAL_DIR/versions/$version/deployments@" $f
+        sed -i -e "s@\${env.kieDir}@$OPENSHIFT_DATA_DIR/kieFilesystem@" $f
+    done
+}
+
+function start() {
+    # no point in deploying bpms ha if base bpms is not already installed
+    isBpmsBaseInstalled
+
+    # 0)  copy and filter and substition variables to various CLI and SQL scripts used in subsequent operations
+    copy_conf
+    replace_envs
+
+    # 1) customize base jboss / bpms runtime by executing bpms ha cli
+    #$OPENSHIFT_JBOSSEAP_DIR/bin/tools/jboss-cli.sh --connect --controller=$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_MANAGEMENT_NATIVE_PORT -c --file=$OPENSHIFT_BIZCENTRAL_DIR/filtered/bizCentral-project.cli
+
+    
+}
+
+
+function stop() {
+      echo "Stopping $cartridge_type cart"
+}
+
+function restart() {
+    echo "Restarting $cartridge_type cart"
+   
+      stop
+      
+      start
+}
+
+function status() {
+   if isrunning
+   then
+      echo "Application is running"
+   else
+      echo "Application is either stopped or inaccessible"
+   fi
+}
+
+function reload() {
+    echo "Reloading $cartridge_type cart"
+    restart
+}
+
+# Clean up any log files
+function tidy() {
+  client_message "Emptying log dir: $OPENSHIFT_BIZCENTRAL_LOG_DIR"
+  shopt -s dotglob
+  rm -rf $OPENSHIFT_BIZCENTRAL_LOG_DIR/*
+}
+
+case "$1" in
+    isdbup|build|deploy|start|stop|restart|status|reload|tidy|replace_envs|printBizCentralARestCalls)
+        $1
+        ;;
+    *)
+
+    echo $"Usage: $0 {isdbup|build|deploy|start|stop|restart|status|reload|tidy|replace_envs|printBizCentralRestCalls}"
+    exit 1
+esac
+
+
