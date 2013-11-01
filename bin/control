@@ -63,7 +63,7 @@ function replace_envs() {
     # note the use of different delimiters for sed since some data (ie:  path variables) include special characters that conflict with delimiter
     for f in ${OPENSHIFT_BIZCENTRAL_DIR}/filtered/*.*
     do
-        sed -i -e "s/\${env.kie.exec.server.rest.base.url}/$kieExecServerRestBaseUrl/g" $f
+        sed -i -e "s@\${env.kie.exec.server.rest.base.url}@$kieExecServerRestBaseUrl@g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.username}/$kieExecServerRestUsername/g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.password}/$kieExecServerRestPassword/g" $f
         sed -i -e "s/\${env.bpms.version}/$bpmsVersion/" $f
