@@ -1,0 +1,13 @@
+#  system properties
+if (outcome != success) of /system-property=kie.exec.server.rest.base.url:read-attribute()
+    /system-property=kie.exec.server.rest.base.url/:add(value="${env.kie.exec.server.rest.base.url}/kie.deployments.json")
+end-if
+if (outcome != success) of /system-property=kie.exec.server.rest.username:read-attribute()
+    /system-property=kie.exec.server.rest.username/:add(value="${env.kie.exec.server.rest.username}/kie.deployments.json")
+end-if
+if (outcome != success) of /system-property=kie.exec.server.rest.password:read-attribute()
+    /system-property=kie.exec.server.rest.password/:add(value="${env.kie.exec.server.rest.password}/kie.deployments.json")
+end-if
+
+# deployment
+deploy ${env.deployDir}/kie-eap-integration-${env.bpms.version}-org.kie.kie-wb-webapp-eap-modules.war --force
