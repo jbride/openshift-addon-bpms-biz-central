@@ -1,3 +1,11 @@
+# add ExampleDS datasource until have weeded out all biz-central dependencies on a database
+# datasource configs
+if (outcome != success) of /subsystem=datasources/data-source=ExampleDS:read-attribute(name=enabled)
+    /subsystem=datasources/data-source=ExampleDS:add(jndi-name="java:jboss/datasources/ExampleDS",connection-url="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",driver-name=h2,user-name=sa,password=sa,pool-name=ExampleDS,max-pool-size=2,min-pool-size=1)
+    /subsystem=datasources/data-source=jbpm-core-cp:enable()
+end-if
+
+
 #  system properties
 if (outcome != success) of /system-property=kie.exec.server.rest.base.url:read-attribute()
     /system-property=kie.exec.server.rest.base.url/:add(value="${env.kie.exec.server.rest.base.url}/kie.deployments.json")
