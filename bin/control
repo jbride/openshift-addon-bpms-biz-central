@@ -80,7 +80,7 @@ function start() {
     replace_envs
 
     # 1) customize base jboss / bpms runtime by executing bpms ha cli
-    #$OPENSHIFT_JBOSSEAP_DIR/bin/tools/jboss-cli.sh --connect --controller=$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_MANAGEMENT_NATIVE_PORT -c --file=$OPENSHIFT_BIZCENTRAL_DIR/filtered/bizcentral-project.cli
+    $OPENSHIFT_JBOSSEAP_DIR/bin/tools/jboss-cli.sh --connect --controller=$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_MANAGEMENT_NATIVE_PORT -c --file=$OPENSHIFT_BIZCENTRAL_DIR/filtered/bizcentral-project.cli
 
     
 }
