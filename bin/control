@@ -4,6 +4,11 @@ cartridge_type="bizcentral"
 version=6.0
 bpmsVersion=6.0.0.CR5
 
+# to-do:  make this more visible to biz-central cartridge end-user 
+kieExecServerRestBaseUrl=http://$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_HTTP_PORT/kie-jbpm-services
+kieExecServerRestUsername=jboss
+kieExecServerRestPassword=brms
+
 
 # check prior installation of BPMS Base cartridge
 function isBpmsBaseInstalled() {
@@ -58,7 +63,6 @@ function replace_envs() {
     # note the use of different delimiters for sed since some data (ie:  path variables) include special characters that conflict with delimiter
     for f in ${OPENSHIFT_BIZCENTRAL_DIR}/filtered/*.*
     do
-        sed -i -e "s/\${env.OPENSHIFT_JBOSSEAP_IP}/$OPENSHIFT_JBOSSEAP_IP/g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.base.url}/$kieExecServerRestBaseUrl/g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.username}/$kieExecServerRestUsername/g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.password}/$kieExecServerRestPassword/g" $f
