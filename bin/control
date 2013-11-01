@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-cartridge_type="bizCentral"
+cartridge_type="bizcentral"
 version=6.0
 
 # check prior installation of BPMS Base cartridge
@@ -76,7 +76,7 @@ function start() {
     replace_envs
 
     # 1) customize base jboss / bpms runtime by executing bpms ha cli
-    #$OPENSHIFT_JBOSSEAP_DIR/bin/tools/jboss-cli.sh --connect --controller=$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_MANAGEMENT_NATIVE_PORT -c --file=$OPENSHIFT_BIZCENTRAL_DIR/filtered/bizCentral-project.cli
+    #$OPENSHIFT_JBOSSEAP_DIR/bin/tools/jboss-cli.sh --connect --controller=$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_MANAGEMENT_NATIVE_PORT -c --file=$OPENSHIFT_BIZCENTRAL_DIR/filtered/bizcentral-project.cli
 
     
 }
@@ -116,12 +116,12 @@ function tidy() {
 }
 
 case "$1" in
-    isdbup|build|deploy|start|stop|restart|status|reload|tidy|replace_envs|printBizCentralARestCalls)
+    isdbup|build|deploy|start|stop|restart|status|reload|tidy|replace_envs|printBizcentralARestCalls)
         $1
         ;;
     *)
 
-    echo $"Usage: $0 {isdbup|build|deploy|start|stop|restart|status|reload|tidy|replace_envs|printBizCentralRestCalls}"
+    echo $"Usage: $0 {isdbup|build|deploy|start|stop|restart|status|reload|tidy|replace_envs|printBizcentralRestCalls}"
     exit 1
 esac
 

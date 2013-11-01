@@ -1,4 +1,4 @@
-Name: bizCentral
+Name: bizcentral
 Cartridge-Short-Name: BIZCENTRAL
 Display-Name: Business Central Server
 Description: ""
@@ -40,9 +40,9 @@ Cart-Data:
     Type: environment
     Description: "Unique ID which identified the gear. This value changes between gears."
 Provides:
-  - "bizCentral"
-  - "bizCentral(version) = 6.0"
-  - "bizCentral(version) >= 6.0"
+  - "bizcentral"
+  - "bizcentral(version) = 6.0"
+  - "bizcentral(version) >= 6.0"
 Publishes:
 Scaling:
   Min: 1
