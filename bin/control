@@ -102,6 +102,11 @@ function restart() {
       start
 }
 
+function isrunning() {
+    // TO-DO:  check if biz-central deployment has occurred
+    return 0
+}
+
 function status() {
    if isrunning
    then
