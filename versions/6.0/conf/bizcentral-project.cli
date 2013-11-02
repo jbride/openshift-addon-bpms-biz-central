@@ -21,4 +21,4 @@ if (outcome != success) of /system-property=org.jboss.processFlow.consoleIntegra
 end-if
 
 # deployment
-deploy ${env.deployDir}/kie-eap-integration-${env.bpms.version}-org.kie.kie-wb-webapp-eap-modules.war --force
+# deploy ${env.deployDir}/kie-eap-integration-${env.bpms.version}-org.kie.kie-wb-webapp-eap-modules.war --force
