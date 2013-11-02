@@ -8,6 +8,8 @@ bpmsVersion=6.0.0.CR5
 kieExecServerRestBaseUrl=http://$OPENSHIFT_JBOSSEAP_IP:$OPENSHIFT_JBOSSEAP_HTTP_PORT/kie-jbpm-services
 kieExecServerRestUsername=jboss
 kieExecServerRestPassword=brms
+gitDir=$OPENSHIFT_DATA_DIR/bpmsGit
+luceneDir=$OPENSHIFT_DATA_DIR/bpmsLucene
 
 
 # check prior installation of BPMS Base cartridge
@@ -64,6 +66,8 @@ function replace_envs() {
     for f in ${OPENSHIFT_BIZCENTRAL_DIR}/filtered/*.*
     do
         sed -i -e "s@\${env.kie.exec.server.rest.base.url}@$kieExecServerRestBaseUrl@g" $f
+        sed -i -e "s@\${env.org.kie.kieora.index.dir}@$luceneDir@g" $f
+        sed -i -e "s@\${env.org.kie.nio.git.dir}@$gitDir@g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.username}/$kieExecServerRestUsername/g" $f
         sed -i -e "s/\${env.kie.exec.server.rest.password}/$kieExecServerRestPassword/g" $f
         sed -i -e "s/\${env.bpms.version}/$bpmsVersion/" $f

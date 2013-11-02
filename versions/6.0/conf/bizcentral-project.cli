@@ -26,7 +26,10 @@ if (outcome != success) of /system-property=org.kie.example:read-attribute()
     /system-property=org.kie.example/:add(value="false")
 end-if
 if (outcome != success) of /system-property=org.kie.nio.git.dir:read-attribute()
-    /system-property=org.kie.nio.git.dir/:add(value="false")
+    /system-property=org.kie.nio.git.dir/:add(value="${env.org.kie.nio.git.dir}")
+end-if
+if (outcome != success) of /system-property=org.kie.kieora.index.dir:read-attribute()
+    /system-property=org.kie.kieora.index.dir/:add(value="${env.org.kie.kieora.index.dir}")
 end-if
 
 # deployment
