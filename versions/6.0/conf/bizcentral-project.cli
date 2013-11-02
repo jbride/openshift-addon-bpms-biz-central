@@ -16,6 +16,9 @@ end-if
 if (outcome != success) of /system-property=kie.exec.server.rest.password:read-attribute()
     /system-property=kie.exec.server.rest.password/:add(value="${env.kie.exec.server.rest.password}/kie.deployments.json")
 end-if
+if (outcome != success) of /system-property=org.jboss.processFlow.consoleIntegration.space.delimited.veto.classes:read-attribute()
+    /system-property=org.jboss.processFlow.consoleIntegration.space.delimited.veto.classes/:add(value="org.jboss.processFlow.consoleIntegration.space.delimited.veto.classes=org.jbpm.services.task.impl.TaskServiceEntryPointImpl org.jbpm.console.ng.bd.backend.server.KieSessionEntryPointImpl")
+end-if
 
 # deployment
 deploy ${env.deployDir}/kie-eap-integration-${env.bpms.version}-org.kie.kie-wb-webapp-eap-modules.war --force
